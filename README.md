@@ -1,241 +1,204 @@
-<!DOCTYPE html>
+Your Companion To A DSHS Life! 
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>School System</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-  /* ---------- NOTES PAPER BACKGROUND ---------- */
-  body {
-    margin: 0;
-    font-family: "Allassy Caps", serif;
-    background-color: #ffffff;
+/* ---------- NOTES PAPER BACKGROUND ---------- */
+body {
+  margin: 0;
+  font-family: "Allassy Caps", serif;
+  background-color: #fff;
+  background-image:
+    repeating-linear-gradient(to bottom, transparent 0px, transparent 26px, rgba(0,0,0,0.1) 27px),
+    radial-gradient(circle, rgba(200,200,200,0.05) 1px, transparent 1px);
+  background-size: 100% 28px, 30px 30px;
+  color: #222;
+}
 
-    /* dotted horizontal note lines */
-    background-image:
-      repeating-linear-gradient(
-        to bottom,
-        transparent 0px,
-        transparent 26px,
-        rgba(0,0,0,0.15) 27px
-      );
+/* ---------- LINKS ---------- */
+.signup-link {
+  color: #007bff;
+  font-weight: bold;
+  cursor: pointer;
+}
+.signup-link:hover {
+  text-decoration: underline;
+}
 
-    background-size: 100% 28px;
-    color: #222;
-  }
+/* ---------- LOGIN & SIGNUP BOX ---------- */
+.login, #signup {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .signup-link {
-    color: #007bff;
-    font-weight: bold;
-    cursor: pointer;
-  }
+.box {
+  background: rgba(255,255,255,0.95);
+  padding: 25px;
+  width: 320px;
+  border-radius: 8px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  text-align: center;
+  border: 1px solid #000; /* add black border like notebook box */
+}
 
-  .signup-link:hover {
-    text-decoration: underline;
-  }
+input, button, textarea, select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 4px;
+}
 
-  /* ---------- LOGIN & SIGNUP ---------- */
-  .login {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
+button {
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
 
-  .box {
-    background: rgba(255,255,255,0.95);
-    padding: 25px;
-    width: 300px;
-    border-radius: 8px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-    text-align: center;
-  }
+button:hover {
+  opacity: 0.9;
+}
 
-  input, button, textarea, select {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-  }
+/* ---------- DASHBOARD ---------- */
+.dashboard {
+  display: none;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-  button {
-    background: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
+.header {
+  background: rgba(0,51,102,0.95);
+  color: white;
+  padding: 15px;
+  text-align: center;
+  font-size: 18px;
+}
 
-  /* ---------- DASHBOARD ---------- */
-  .dashboard {
-    display: none;
-    height: 100vh;
-  }
+.container {
+  display: flex;
+  height: calc(100vh - 60px);
+  overflow: hidden;
+}
 
-  .header {
-    background: rgba(0,51,102,0.95);
-    color: white;
-    padding: 15px;
-    text-align: center;
-    font-size: 18px;
-  }
+/* ---------- MENU ---------- */
+.menu {
+  width: 220px;
+  background: rgba(255,255,255,0.95);
+  padding: 10px;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s;
+  border-right: 1px solid #000;
+}
 
-  .container {
-    display: flex;
-    height: calc(100vh - 60px);
-  }
+.menu button {
+  background: #fff;
+  color: black;
+  margin-top: 6px;
+  font-size: 14px;
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #000;
+  border-radius: 4px;
+  cursor: pointer;
+}
 
-  /* ---------- MENU ---------- */
-  .menu {
-    width: 220px;
-    background: rgba(255,255,255,0.95);
-    padding: 10px;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.2);
-    display: flex;
-    flex-direction: column;
-    transition: width 0.3s;
-    overflow-y: auto;
-  }
+.menu button:hover {
+  background: #e0e0e0;
+}
 
-  .menu.collapsed {
-    width: 60px;
-  }
+.menu.collapsed {
+  width: 60px;
+}
+.menu.collapsed button {
+  font-size: 0;
+}
+.menu.collapsed button::before {
+  content: "•";
+  font-size: 18px;
+}
 
-  /* ---------- MENU BUTTONS ---------- */
-  .menu button {
-    background: #fff;
-    color: black;
-    margin: 6px 0;
-    font-size: 14px;
-    padding: 10px;
-    border: 2px solid black;
-    border-radius: 5px;
-    text-align: left;
-    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
-  }
+.toggle-btn {
+  background: #003366;
+  color: white;
+  font-size: 18px;
+}
 
-  .menu button:hover {
-    background: #f0f0f0;
-    transform: translateY(-3px);
-    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-  }
+.logout {
+  margin-top: auto;
+  background: #d9534f !important;
+  color: white !important;
+  font-size: 14px !important;
+}
 
-  .menu.collapsed button:hover {
-    transform: none;
-    box-shadow: none;
-  }
+/* ---------- CONTENT ---------- */
+.content {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
 
-  .menu.collapsed button {
-    font-size: 0;
-  }
+.section {
+  background: rgba(255,255,255,0.9);
+  padding: 15px;
+  border-radius: 5px;
+  width: 90%;
+  margin-top: 15px;
+  border: 1px solid #000; /* add notebook style border */
+}
 
-  .menu.collapsed button::before {
-    content: "•";
-    font-size: 18px;
-  }
+img.school {
+  max-width: 80%;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
 
-  .toggle-btn {
-    background: #003366;
-    color: white;
-    font-size: 18px;
-  }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 15px;
+}
 
-  .logout {
-    margin-top: auto;
-    background: #d9534f !important;
-    color: white !important;
-    font-size: 14px !important;
-  }
+table, th, td {
+  border: 1px solid #000;
+  text-align: center;
+  padding: 5px;
+}
 
-  /* ---------- CONTENT ---------- */
-  .content {
-    flex: 1;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow-y: auto;
-  }
+.edit {
+  border: 1px solid #000;
+}
 
-  .section {
-    background: rgba(255,255,255,0.9);
-    padding: 15px;
-    border-radius: 5px;
-    width: 90%;
-    margin-top: 15px;
-  }
+.view-only {
+  background: #f9f9f9;
+  pointer-events: none;
+}
 
-  img.school {
-    max-width: 80%;
-    border-radius: 10px;
-    margin-bottom: 20px;
-  }
+.subsection {
+  background: rgba(245,245,245,0.8);
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  text-align: left;
+  border: 1px solid #000;
+}
 
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    margin-bottom: 15px;
-  }
-
-  table, th, td {
-    border: 1px solid #ccc;
-    text-align: center;
-    padding: 5px;
-  }
-
-  .edit {
-    border: 1px solid #ccc;
-  }
-
-  .view-only {
-    background: #f9f9f9;
-    pointer-events: none;
-  }
-
-  .subsection {
-    background: rgba(245,245,245,0.8);
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 5px;
-    text-align: left;
-  }
-
-  /* ---------- MOBILE RESPONSIVE ---------- */
-  @media (max-width: 768px){
-    .container {
-      flex-direction: column;
-      height: auto;
-    }
-
-    .menu {
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      overflow-x: auto;
-      box-shadow: none;
-    }
-
-    .menu button {
-      flex: 0 0 auto;
-      margin: 5px;
-      white-space: nowrap;
-    }
-
-    .menu.collapsed {
-      width: 100%;
-    }
-
-    .content {
-      width: 100%;
-      padding: 10px;
-    }
-
-    img.school {
-      max-width: 100%;
-    }
-  }
+/* ---------- MOBILE RESPONSIVE ---------- */
+@media screen and (max-width: 768px){
+  .container {flex-direction: column;}
+  .menu {width: 100%; display: flex; flex-direction: row; overflow-x: auto;}
+  .menu button {flex: 1; margin: 4px;}
+}
 </style>
 </head>
-
 <body>
 
 <!-- LOGIN -->
@@ -245,7 +208,7 @@
     <input type="password" id="password" placeholder="Enter password">
     <button onclick="login()">Login</button>
     <p style="font-size:13px; margin-top:15px;">
-      Don’t have an account yet?
+      Don’t have an account yet? 
       <span class="signup-link" onclick="showSignup()">Sign up!</span>
     </p>
     <p id="msg"></p>
@@ -256,16 +219,15 @@
 <div class="login" id="signup" style="display:none;">
   <div class="box">
     <h2>Student Sign Up</h2>
-    <input type="text" placeholder="Full Name">
-    <input type="text" placeholder="Student I.D">
-    <input type="text" placeholder="Section">
-    <input type="text" placeholder="Track">
-    <input type="text" placeholder="Strand">
-    <input type="text" placeholder="Grade Level">
+    <input type="text" placeholder="Full Name" id="signupName">
+    <input type="text" placeholder="Student I.D" id="signupID">
+    <input type="text" placeholder="Section" id="signupSection">
+    <input type="text" placeholder="Track" id="signupTrack">
+    <input type="text" placeholder="Strand" id="signupStrand">
+    <input type="text" placeholder="Grade Level" id="signupGrade">
     <button onclick="submitSignup()">Create Account</button>
     <p style="font-size:13px; margin-top:10px;">
-      Already have an account?
-      <span class="signup-link" onclick="showLogin()">Login</span>
+      Already have an account? <span class="signup-link" onclick="showLogin()">Login</span>
     </p>
   </div>
 </div>
@@ -287,50 +249,47 @@
 
 <script>
 let role = "";
-let currentStudent = "Jibdel"; // For student login
-let currentParentChild = "Jibdel"; // For parent login
+let studentsData = [];
+let teachersData = [
+  {name:"Mr. Smith", id:"T001", position:"Teacher III", section:"Math 10"}
+];
+let currentStudent = null;
+let currentTeacher = teachersData[0];
 
-/* ---------- LOGIN ---------- */
+// ---------- LOGIN ----------
 function login() {
   const pass = document.getElementById("password").value;
-  if (pass === "teacher") role = "teacher";
-  else if (pass === "student") role = "student";
-  else if (pass === "parent") role = "parent";
-  else { document.getElementById("msg").innerText="Invalid password"; return; }
+  if(pass==="teacher"){ role="teacher"; currentStudent=null;}
+  else if(pass==="student"){ role="student"; currentStudent=studentsData[0]||null;}
+  else{ document.getElementById("msg").innerText="Invalid password"; return; }
 
   document.getElementById("login").style.display="none";
-  document.getElementById("dashboard").style.display="block";
+  document.getElementById("signup").style.display="none";
+  document.getElementById("dashboard").style.display="flex";
   loadDashboard();
 }
 
-/* ---------- DASHBOARD ---------- */
-function loadDashboard() {
+// ---------- DASHBOARD ----------
+function loadDashboard(){
   document.getElementById("roleTitle").innerText = role.toUpperCase()+" DASHBOARD";
-
   const menu = document.getElementById("menu");
   menu.innerHTML="";
-
-  const toggle = document.createElement("button");
+  const toggle=document.createElement("button");
   toggle.innerText="☰"; toggle.className="toggle-btn"; toggle.onclick=toggleMenu;
   menu.appendChild(toggle);
 
   let items=[];
-  if(role==="teacher"){
-    items=["Attendance","Grades","Student Files","Parents","Subjects","Schedule","Bulletin Board"];
-  } else if(role==="student"){
-    items=["Attendance","Grades","Schedule","AI Chat","Bulletin Board","Planner"];
-  } else if(role==="parent"){
-    items=["Child Attendance","Child Grades","Child Schedule","Teacher Chat","Bulletin Board"];
-  }
+  if(role==="teacher"){ items=["My Info","Attendance","Grades","Student Files","Parents","Subjects","Schedule","Bulletin Board"]; }
+  else if(role==="student"){ items=["My Info","Attendance","Grades","Schedule","AI Chat","Bulletin Board","Planner"]; }
 
   createMenu(items);
 
   const logoutBtn=document.createElement("button");
   logoutBtn.innerText="⬅ Back"; logoutBtn.className="logout"; logoutBtn.onclick=logout;
   menu.appendChild(logoutBtn);
-
 }
-/* ---------- MENU ---------- */
+
+// ---------- MENU ----------
 function createMenu(items){
   const menu=document.getElementById("menu");
   items.forEach(item=>{
@@ -341,33 +300,70 @@ function createMenu(items){
   });
 }
 
-/* ---------- SHOW/HIDE SIGNUP ---------- */
-function showSignup() {
-  document.getElementById("login").style.display = "none";
-  document.getElementById("signup").style.display = "flex";
-}
+// ---------- SHOW / HIDE ----------
+function showSignup(){ document.getElementById("login").style.display="none"; document.getElementById("signup").style.display="flex";}
+function showLogin(){ document.getElementById("signup").style.display="none"; document.getElementById("login").style.display="flex";}
 
-function showLogin() {
-  document.getElementById("signup").style.display = "none";
-  document.getElementById("login").style.display = "flex";
-}
-
-function submitSignup() {
-  alert("Signup successful! You can now log in.");
+// ---------- SIGNUP ----------
+function submitSignup(){
+  const student={ 
+    name: document.getElementById("signupName").value,
+    id: document.getElementById("signupID").value,
+    section: document.getElementById("signupSection").value,
+    track: document.getElementById("signupTrack").value,
+    strand: document.getElementById("signupStrand").value,
+    grade: document.getElementById("signupGrade").value
+  };
+  studentsData.push(student);
+  alert("Signup successful!");
   showLogin();
 }
 
-/* ---------- LOGOUT ---------- */
-function logout(){ 
-  role=""; 
-  document.getElementById("dashboard").style.display="none"; 
-  document.getElementById("login").style.display="flex"; 
-}
+// ---------- LOGOUT ----------
+function logout(){ role=""; document.getElementById("dashboard").style.display="none"; document.getElementById("login").style.display="flex"; }
 
-/* ---------- TOGGLE MENU ---------- */
+// ---------- TOGGLE MENU ----------
 function toggleMenu(){ document.getElementById("menu").classList.toggle("collapsed"); }
 
-/* ---------- The rest of your old dashboard functions (attendance, grades, planner etc.) can remain as-is ---------- */
+// ---------- LOAD SECTION ----------
+function loadSection(name){
+  const content=document.getElementById("content");
+  content.innerHTML="";
+
+  const img=document.createElement("img");
+  img.src="https://source.unsplash.com/800x400/?school";
+  img.className="school";
+  content.appendChild(img);
+
+  if(name==="My Info"){
+    const section=document.createElement("div"); section.className="section";
+    let html="";
+    if(role==="teacher"){
+      html=`<h3>Teacher Info</h3>
+      <p><strong>Name:</strong> ${currentTeacher.name}</p>
+      <p><strong>ID:</strong> ${currentTeacher.id}</p>
+      <p><strong>Position:</strong> ${currentTeacher.position}</p>
+      <p><strong>Section Handled:</strong> ${currentTeacher.section}</p>`;
+    } else if(role==="student" && currentStudent){
+      html=`<h3>Student Info</h3>
+      <p><strong>Name:</strong> ${currentStudent.name}</p>
+      <p><strong>ID:</strong> ${currentStudent.id}</p>
+      <p><strong>Section:</strong> ${currentStudent.section}</p>
+      <p><strong>Track:</strong> ${currentStudent.track}</p>
+      <p><strong>Strand:</strong> ${currentStudent.strand}</p>
+      <p><strong>Grade:</strong> ${currentStudent.grade}</p>`;
+    }
+    section.innerHTML=html;
+    content.appendChild(section);
+    return;
+  }
+
+  /* ---------- OLD SECTIONS (Attendance, Grades, etc.) ---------- */
+  const section=document.createElement("div"); section.className="section";
+  section.innerHTML=`<h3>${name}</h3><p>Old content placeholder (attendance, grades, etc.)</p>`;
+  content.appendChild(section);
+}
 </script>
+
 </body>
 </html>
