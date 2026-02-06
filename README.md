@@ -2,32 +2,24 @@ Your Companion To A DSHS Life!
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>School System</title>
+<title>DSHS School System</title>
 <style>
-/* ---------- NOTES PAPER BACKGROUND ---------- */
+  /* ---------- NOTES PAPER BACKGROUND ---------- */
 body {
   margin: 0;
   font-family: "Allassy Caps", serif;
   background-color: #fff;
+
+  /* dotted lines + subtle scribbles */
   background-image:
     repeating-linear-gradient(to bottom, transparent 0px, transparent 26px, rgba(0,0,0,0.1) 27px),
-    radial-gradient(circle, rgba(200,200,200,0.05) 1px, transparent 1px);
-  background-size: 100% 28px, 30px 30px;
+    url('data:image/svg+xml,%3Csvg width="100" height="100" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M10 10 q5 5 10 0" stroke="rgba(0,0,0,0.05)" stroke-width="1" fill="none"/%3E%3C/svg%3E');
+  background-size: 100% 28px, 50px 50px;
   color: #222;
 }
 
-/* ---------- LINKS ---------- */
-.signup-link {
-  color: #007bff;
-  font-weight: bold;
-  cursor: pointer;
-}
-.signup-link:hover {
-  text-decoration: underline;
-}
-
-/* ---------- LOGIN & SIGNUP BOX ---------- */
-.login, #signup {
+/* ---------- LOGIN & SIGNUP ---------- */
+.login {
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -37,18 +29,16 @@ body {
 .box {
   background: rgba(255,255,255,0.95);
   padding: 25px;
-  width: 320px;
+  width: 300px;
   border-radius: 8px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.3);
   text-align: center;
-  border: 1px solid #000; /* add black border like notebook box */
 }
 
-input, button, textarea, select {
+input, button, select, textarea {
   width: 100%;
   padding: 10px;
   margin-top: 10px;
-  border-radius: 4px;
 }
 
 button {
@@ -58,16 +48,20 @@ button {
   cursor: pointer;
 }
 
-button:hover {
-  opacity: 0.9;
+.signup-link {
+  color: #007bff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.signup-link:hover {
+  text-decoration: underline;
 }
 
 /* ---------- DASHBOARD ---------- */
 .dashboard {
   display: none;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 
 .header {
@@ -81,7 +75,6 @@ button:hover {
 .container {
   display: flex;
   height: calc(100vh - 60px);
-  overflow: hidden;
 }
 
 /* ---------- MENU ---------- */
@@ -93,31 +86,28 @@ button:hover {
   display: flex;
   flex-direction: column;
   transition: width 0.3s;
-  border-right: 1px solid #000;
-}
-
-.menu button {
-  background: #fff;
-  color: black;
-  margin-top: 6px;
-  font-size: 14px;
-  padding: 10px;
-  text-align: left;
-  border: 1px solid #000;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.menu button:hover {
-  background: #e0e0e0;
 }
 
 .menu.collapsed {
   width: 60px;
 }
+
+.menu button {
+  background: #eee;
+  color: black;
+  margin-top: 6px;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  border: 1px solid #000; /* black border for menu buttons */
+  border-radius: 4px;
+  padding: 8px;
+}
+
 .menu.collapsed button {
   font-size: 0;
 }
+
 .menu.collapsed button::before {
   content: "•";
   font-size: 18px;
@@ -152,7 +142,6 @@ button:hover {
   border-radius: 5px;
   width: 90%;
   margin-top: 15px;
-  border: 1px solid #000; /* add notebook style border */
 }
 
 img.school {
@@ -168,13 +157,13 @@ table {
 }
 
 table, th, td {
-  border: 1px solid #000;
+  border: 1px solid #ccc;
   text-align: center;
   padding: 5px;
 }
 
 .edit {
-  border: 1px solid #000;
+  border: 1px solid #ccc;
 }
 
 .view-only {
@@ -188,29 +177,33 @@ table, th, td {
   margin-top: 10px;
   border-radius: 5px;
   text-align: left;
-  border: 1px solid #000;
 }
 
-/* ---------- MOBILE RESPONSIVE ---------- */
-@media screen and (max-width: 768px){
-  .container {flex-direction: column;}
-  .menu {width: 100%; display: flex; flex-direction: row; overflow-x: auto;}
-  .menu button {flex: 1; margin: 4px;}
+/* ---------- MOBILE ---------- */
+@media screen and (max-width: 768px) {
+  .container { flex-direction: column; }
+  .menu { width: 100%; display: flex; flex-wrap: wrap; }
+  .menu button { flex: 1 1 48%; margin: 5px; }
+  .content { width: 100%; padding: 10px; }
 }
 </style>
 </head>
+
 <body>
 
 <!-- LOGIN -->
 <div class="login" id="login">
   <div class="box">
     <h2>Login</h2>
+    <input type="text" id="username" placeholder="Enter username">
     <input type="password" id="password" placeholder="Enter password">
     <button onclick="login()">Login</button>
+
     <p style="font-size:13px; margin-top:15px;">
-      Don’t have an account yet? 
+      Don’t have an account yet?
       <span class="signup-link" onclick="showSignup()">Sign up!</span>
     </p>
+
     <p id="msg"></p>
   </div>
 </div>
@@ -219,15 +212,16 @@ table, th, td {
 <div class="login" id="signup" style="display:none;">
   <div class="box">
     <h2>Student Sign Up</h2>
-    <input type="text" placeholder="Full Name" id="signupName">
-    <input type="text" placeholder="Student I.D" id="signupID">
-    <input type="text" placeholder="Section" id="signupSection">
-    <input type="text" placeholder="Track" id="signupTrack">
-    <input type="text" placeholder="Strand" id="signupStrand">
-    <input type="text" placeholder="Grade Level" id="signupGrade">
+    <input type="text" id="suName" placeholder="Full Name">
+    <input type="text" id="suID" placeholder="Student I.D">
+    <input type="text" id="suSection" placeholder="Section">
+    <input type="text" id="suTrack" placeholder="Track">
+    <input type="text" id="suStrand" placeholder="Strand">
+    <input type="text" id="suGrade" placeholder="Grade Level">
     <button onclick="submitSignup()">Create Account</button>
     <p style="font-size:13px; margin-top:10px;">
-      Already have an account? <span class="signup-link" onclick="showLogin()">Login</span>
+      Already have an account?
+      <span class="signup-link" onclick="showLogin()">Login</span>
     </p>
   </div>
 </div>
@@ -248,44 +242,72 @@ table, th, td {
 </div>
 
 <script>
+// ---------- PREDEFINED DATA ----------
 let role = "";
-let studentsData = [];
-let teachersData = [
-  {name:"Mr. Smith", id:"T001", position:"Teacher III", section:"Math 10"}
+let students = [
+  {name:"Jibdel", id:"S001", section:"10A", track:"STEM", strand:"Science", grade:"10"},
+  {name:"Viennes", id:"S002", section:"10B", track:"ABM", strand:"Business", grade:"10"},
+  {name:"Jurl", id:"S003", section:"10C", track:"GAS", strand:"Arts", grade:"10"},
+  {name:"Sam", id:"S004", section:"10A", track:"STEM", strand:"Science", grade:"10"},
+  {name:"Justine", id:"S005", section:"10B", track:"ABM", strand:"Business", grade:"10"},
+  {name:"Ashley", id:"S006", section:"10C", track:"GAS", strand:"Arts", grade:"10"},
+  {name:"Gerlie", id:"S007", section:"10A", track:"STEM", strand:"Science", grade:"10"},
+  {name:"Meriem", id:"S008", section:"10B", track:"ABM", strand:"Business", grade:"10"}
 ];
-let currentStudent = null;
-let currentTeacher = teachersData[0];
+
+let subjects = ["Entrepreneurship","Three eyes","🧢 🗿","Math","Pi6","P ey"];
+let gradesData = {
+  "1st": {"Entrepreneurship":"A","Three eyes":"B+","🧢 🗿":"C","Math":"A-","Pi6":"B","P ey":"B+"},
+  "2nd": {"Entrepreneurship":"A-","Three eyes":"A","🧢 🗿":"B+","Math":"A","Pi6":"B+","P ey":"A-"}
+};
+
+let teachers = [
+  {username:"mrsmith", password:"teacher", name:"Mr. Smith", id:"T001", position:"Teacher III", sectionHandled:"10A"}
+];
 
 // ---------- LOGIN ----------
 function login() {
-  const pass = document.getElementById("password").value;
-  if(pass==="teacher"){ role="teacher"; currentStudent=null;}
-  else if(pass==="student"){ role="student"; currentStudent=studentsData[0]||null;}
-  else{ document.getElementById("msg").innerText="Invalid password"; return; }
+  let user = document.getElementById("username").value;
+  let pass = document.getElementById("password").value;
 
-  document.getElementById("login").style.display="none";
-  document.getElementById("signup").style.display="none";
-  document.getElementById("dashboard").style.display="flex";
-  loadDashboard();
+  // check teacher
+  let t = teachers.find(t => t.username===user && t.password===pass);
+  if(t){ role="teacher"; currentUser=t; showDashboard(); return;}
+
+  // check student
+  let s = students.find(s => s.id===user);
+  if(s){ role="student"; currentUser=s; showDashboard(); return;}
+
+  document.getElementById("msg").innerText="Invalid username/password";
 }
 
 // ---------- DASHBOARD ----------
-function loadDashboard(){
+let currentUser = null;
+function showDashboard(){
+  document.getElementById("login").style.display="none";
+  document.getElementById("signup").style.display="none";
+  document.getElementById("dashboard").style.display="block";
+
   document.getElementById("roleTitle").innerText = role.toUpperCase()+" DASHBOARD";
+
   const menu = document.getElementById("menu");
   menu.innerHTML="";
-  const toggle=document.createElement("button");
+
+  const toggle = document.createElement("button");
   toggle.innerText="☰"; toggle.className="toggle-btn"; toggle.onclick=toggleMenu;
   menu.appendChild(toggle);
 
   let items=[];
-  if(role==="teacher"){ items=["My Info","Attendance","Grades","Student Files","Parents","Subjects","Schedule","Bulletin Board"]; }
-  else if(role==="student"){ items=["My Info","Attendance","Grades","Schedule","AI Chat","Bulletin Board","Planner"]; }
+  if(role==="teacher"){
+    items=["Attendance","Grades","Student Files","Parents","Subjects","Schedule","Bulletin Board","My Info"];
+  } else if(role==="student"){
+    items=["Attendance","Grades","Schedule","AI Chat","Bulletin Board","Planner","My Info"];
+  }
 
   createMenu(items);
 
   const logoutBtn=document.createElement("button");
-  logoutBtn.innerText="⬅ Back"; logoutBtn.className="logout"; logoutBtn.onclick=logout;
+  logoutBtn.innerText="⬅ Logout"; logoutBtn.className="logout"; logoutBtn.onclick=logout;
   menu.appendChild(logoutBtn);
 }
 
@@ -300,67 +322,114 @@ function createMenu(items){
   });
 }
 
-// ---------- SHOW / HIDE ----------
-function showSignup(){ document.getElementById("login").style.display="none"; document.getElementById("signup").style.display="flex";}
-function showLogin(){ document.getElementById("signup").style.display="none"; document.getElementById("login").style.display="flex";}
+function toggleMenu(){ document.getElementById("menu").classList.toggle("collapsed"); }
+function logout(){ 
+  role=""; 
+  currentUser=null;
+  document.getElementById("dashboard").style.display="none"; 
+  document.getElementById("login").style.display="flex"; 
+}
 
 // ---------- SIGNUP ----------
-function submitSignup(){
-  const student={ 
-    name: document.getElementById("signupName").value,
-    id: document.getElementById("signupID").value,
-    section: document.getElementById("signupSection").value,
-    track: document.getElementById("signupTrack").value,
-    strand: document.getElementById("signupStrand").value,
-    grade: document.getElementById("signupGrade").value
+function showSignup() { document.getElementById("login").style.display="none"; document.getElementById("signup").style.display="flex"; }
+function showLogin() { document.getElementById("signup").style.display="none"; document.getElementById("login").style.display="flex"; }
+
+function submitSignup() {
+  let newStudent = {
+    name: document.getElementById("suName").value,
+    id: document.getElementById("suID").value,
+    section: document.getElementById("suSection").value,
+    track: document.getElementById("suTrack").value,
+    strand: document.getElementById("suStrand").value,
+    grade: document.getElementById("suGrade").value
   };
-  studentsData.push(student);
-  alert("Signup successful!");
+  students.push(newStudent);
+  alert("Signup successful! You can now log in with your Student ID.");
   showLogin();
 }
 
-// ---------- LOGOUT ----------
-function logout(){ role=""; document.getElementById("dashboard").style.display="none"; document.getElementById("login").style.display="flex"; }
-
-// ---------- TOGGLE MENU ----------
-function toggleMenu(){ document.getElementById("menu").classList.toggle("collapsed"); }
-
-// ---------- LOAD SECTION ----------
+// ---------- LOAD SECTIONS ----------
 function loadSection(name){
   const content=document.getElementById("content");
   content.innerHTML="";
-
   const img=document.createElement("img");
   img.src="https://source.unsplash.com/800x400/?school";
   img.className="school";
   content.appendChild(img);
 
+  let editable=(role==="teacher");
+  let editClass=editable?"edit":"view-only";
+
+  // ---------- MY INFO ----------
   if(name==="My Info"){
-    const section=document.createElement("div"); section.className="section";
-    let html="";
+    const section = document.createElement("div");
+    section.className="section";
+    let html = "<h3>My Info</h3>";
     if(role==="teacher"){
-      html=`<h3>Teacher Info</h3>
-      <p><strong>Name:</strong> ${currentTeacher.name}</p>
-      <p><strong>ID:</strong> ${currentTeacher.id}</p>
-      <p><strong>Position:</strong> ${currentTeacher.position}</p>
-      <p><strong>Section Handled:</strong> ${currentTeacher.section}</p>`;
-    } else if(role==="student" && currentStudent){
-      html=`<h3>Student Info</h3>
-      <p><strong>Name:</strong> ${currentStudent.name}</p>
-      <p><strong>ID:</strong> ${currentStudent.id}</p>
-      <p><strong>Section:</strong> ${currentStudent.section}</p>
-      <p><strong>Track:</strong> ${currentStudent.track}</p>
-      <p><strong>Strand:</strong> ${currentStudent.strand}</p>
-      <p><strong>Grade:</strong> ${currentStudent.grade}</p>`;
+      html += `<p>Name: ${currentUser.name}</p>`;
+      html += `<p>Teacher I.D: ${currentUser.id}</p>`;
+      html += `<p>Position: ${currentUser.position}</p>`;
+      html += `<p>Section Handled: ${currentUser.sectionHandled}</p>`;
+    } else if(role==="student"){
+      html += `<p>Name: ${currentUser.name}</p>`;
+      html += `<p>Student I.D: ${currentUser.id}</p>`;
+      html += `<p>Section: ${currentUser.section}</p>`;
+      html += `<p>Track: ${currentUser.track}</p>`;
+      html += `<p>Strand: ${currentUser.strand}</p>`;
+      html += `<p>Grade Level: ${currentUser.grade}</p>`;
     }
-    section.innerHTML=html;
+    section.innerHTML = html;
     content.appendChild(section);
     return;
   }
 
-  /* ---------- OLD SECTIONS (Attendance, Grades, etc.) ---------- */
+  // ---------- ATTENDANCE ----------
+  if(name==="Attendance"){
+    const section=document.createElement("div"); section.className="section";
+    const dates=["2026-02-01","2026-02-02","2026-02-03"];
+    let tableHTML="<h3>Attendance Table</h3><table><tr><th>Name</th>";    
+    dates.forEach(d=>tableHTML+=`<th>${d}</th>`); tableHTML+="</tr>";    
+    students.forEach(s=>{
+      tableHTML+=`<tr><td>${s.name}</td>`;
+      dates.forEach(()=>tableHTML+=`<td><input type="checkbox" ${editable?"":"disabled"}></td>`);
+      tableHTML+="</tr>";
+    });
+    tableHTML+="</table>";    
+    section.innerHTML=tableHTML;    
+    content.appendChild(section);    
+    return;
+  }
+
+  // ---------- GRADES ----------
+  if(name==="Grades"){
+    const section=document.createElement("div"); section.className="section";
+    section.innerHTML=`<h3>Grades</h3>
+      <label for="semesterSelect">Select Semester: </label>
+      <select id="semesterSelect">
+        <option value="1st">1st Semester</option>
+        <option value="2nd">2nd Semester</option>
+      </select>
+      <div id="gradesContent" style="margin-top:15px;"></div>`;
+    content.appendChild(section);
+
+    const gradesContent=section.querySelector("#gradesContent");
+    const semesterSelect=section.querySelector("#semesterSelect");
+
+    function renderGrades(sem){
+      let html=`<table><tr><th>Subject</th><th>Grade</th></tr>`;
+      subjects.forEach(subj=>{
+        html+=`<tr><td>${subj}</td><td><input type="text" value="${gradesData[sem][subj]}" class="${editable?"edit":"view-only"}" ${editable?"":"disabled"}></td></tr>`;
+      });
+      gradesContent.innerHTML = html;
+    }
+    renderGrades("1st");
+    semesterSelect.addEventListener("change",()=>{renderGrades(semesterSelect.value);});
+    return;
+  }
+
+  // ---------- OTHER SECTIONS ----------
   const section=document.createElement("div"); section.className="section";
-  section.innerHTML=`<h3>${name}</h3><p>Old content placeholder (attendance, grades, etc.)</p>`;
+  section.innerHTML=`<h3>${name}</h3><p>Section content placeholder...</p>`;
   content.appendChild(section);
 }
 </script>
